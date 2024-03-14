@@ -1,10 +1,8 @@
+use graphics::ellipse::circle;
+use opengl_graphics::GlGraphics;
+use piston::{RenderArgs, UpdateArgs};
 
-
-    use graphics::ellipse::circle;
-    use opengl_graphics::GlGraphics;
-    use piston::{RenderArgs, UpdateArgs};
-
-    pub struct App {
+pub struct App {
         pub gl: GlGraphics,
         pub gravity: f64,
         pub ball: Ball
@@ -32,10 +30,16 @@
                 let transform = c.transform;
                 let x = circle(ball.x, ball.y, ball.radius);
                 circle_arc(ball.colour, 10.0, 0.0, 6.28, x, transform, gl);
-            })
+            });
         }
 
         pub fn update(&mut self, args: &UpdateArgs) {
-            self.ball.y += 10.0 * args.dt;
+            // +10 because of the thickness of the circle arc
+            if self.ball.y + self.ball.radius + 10.0 < 500.0 {
+                self.ball.vel += self.gravity * args.dt;
+            } else {
+                self.ball.vel = -self.ball.vel * 0.95;
+            }
+            self.ball.y += (self.ball.vel * args.dt) - (0.5 * self.gravity * args.dt * args.dt);
         }
     }
