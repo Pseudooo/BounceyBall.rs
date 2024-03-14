@@ -1,0 +1,6 @@
+/target
+/.idea/.gitignore
+/.idea/bouncy_ball.iml
+/Cargo.lock
+/.idea/modules.xml
+/.idea/vcs.xml
