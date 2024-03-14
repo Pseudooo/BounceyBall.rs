@@ -27,9 +27,11 @@ fn main() {
     // Create a new game and run it.
     let mut app = App {
         gl: GlGraphics::new(opengl),
+        gravity: 2750.0,
         ball: Ball {
             x: 250.0,
             y: 250.0,
+            vel: -10.0,
             radius: 10.0,
             colour: RED
         },
