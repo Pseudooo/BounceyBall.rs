@@ -6,6 +6,7 @@
 
     pub struct App {
         pub gl: GlGraphics,
+        pub gravity: f64,
         pub ball: Ball
     }
 
@@ -13,6 +14,7 @@
         pub x: f64,
         pub y: f64,
         pub radius: f64,
+        pub vel: f64,
         pub colour: [f32; 4],
     }
 
