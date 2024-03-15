@@ -33,13 +33,14 @@ impl App {
         });
     }
 
-    pub fn update(&mut self, args: &UpdateArgs) {
-        // +10 because of the thickness of the circle arc
-        if self.ball.y + self.ball.radius + 10.0 < 500.0 {
-            self.ball.vel += self.gravity * args.dt;
-        } else {
-            self.ball.vel = -self.ball.vel;
+        pub fn update(&mut self, args: &UpdateArgs) {
+            // +10 because of the thickness of the circle arc
+            if self.ball.y + self.ball.radius + 10.0 < 500.0 {
+                self.ball.vel += self.gravity * args.dt;
+            } else {
+                self.ball.vel = -self.ball.vel * 0.95;
+                self.ball.y = 480.0;
+            }
+            self.ball.y += (self.ball.vel * args.dt) - (0.5 * self.gravity * args.dt * args.dt);
         }
-        self.ball.y += (self.ball.vel * args.dt) - (0.5 * self.gravity * args.dt * args.dt);
-    }
 }
