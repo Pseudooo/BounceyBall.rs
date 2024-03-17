@@ -3,9 +3,11 @@ use opengl_graphics::GlGraphics;
 use piston::{RenderArgs, UpdateArgs};
 
 use crate::ball::Ball;
+use crate::vector::Vector;
 
 pub struct App {
         pub gl: GlGraphics,
+        pub last_mouse_pos: Vector,
         pub gravity: f64,
         pub ball: Ball
 }
