@@ -2,18 +2,12 @@ use graphics::ellipse::circle;
 use opengl_graphics::GlGraphics;
 use piston::{RenderArgs, UpdateArgs};
 
+use crate::ball::Ball;
+
 pub struct App {
         pub gl: GlGraphics,
         pub gravity: f64,
         pub ball: Ball
-}
-
-pub struct Ball {
-    pub x: f64,
-    pub y: f64,
-    pub radius: f64,
-    pub vel: f64,
-    pub colour: [f32; 4],
 }
 
 impl App {
