@@ -39,12 +39,18 @@ fn main() {
     // Create a new game and run it.
     let mut app = App {
         gl: GlGraphics::new(opengl),
+        last_mouse_pos: Vector::new(0.0, 0.0),
         gravity: 2750.0,
         ball,
     };
 
     let mut events = Events::new(EventSettings::new());
     while let Some(e) = events.next(&mut window) {
+
+        if let Some(mouse_args) = e.mouse_cursor_args() {
+            app.last_mouse_pos = Vector::new(mouse_args[0], mouse_args[1]);
+        }
+
         if let Some(args) = e.render_args() {
             app.render(&args);
         }
