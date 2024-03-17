@@ -49,6 +49,7 @@ fn main() {
     };
 
     let mut events = Events::new(EventSettings::new());
+    let mut mouse_pushed = false;
     while let Some(e) = events.next(&mut window) {
 
         if let Some(mouse_args) = e.mouse_cursor_args() {
@@ -63,24 +64,25 @@ fn main() {
             app.update(&args);
         }
 
+        if mouse_pushed {
+            app.mouse_push();
+        }
+
         match e {
             Event::Input(ref input, ..) => match input {
                 Input::Button(button) => match button.state {
                     ButtonState::Press => match button.button {
                         Button::Mouse(MouseButton::Left) => {
-                            let mouse_pos = &app.last_mouse_pos;
-                            let ball = &mut app.ball;
-
-                            const VEL_SCALE: f64 = 2.5;
-
-                            ball.vel.i += VEL_SCALE * (mouse_pos.i - ball.x);
-                            ball.vel.j += VEL_SCALE * (mouse_pos.j - ball.y);
-
-                            println!("CLICK");
+                            mouse_pushed = true;
                         }
                         _ => ()
-                    }
-                    _ => ()
+                    },
+                    ButtonState::Release => match button.button {
+                        Button::Mouse(MouseButton::Left) => {
+                            mouse_pushed = false;
+                        },
+                        _ => (),
+                    },
                 }
                 _ => ()
             }
