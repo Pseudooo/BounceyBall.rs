@@ -9,7 +9,8 @@ pub struct App {
         pub gl: GlGraphics,
         pub last_mouse_pos: Vector,
         pub gravity: f64,
-        pub ball: Ball
+        pub ball: Ball,
+        pub win_size: [f64; 2]
 }
 
 impl App {
@@ -32,11 +33,11 @@ impl App {
     pub fn update(&mut self, args: &UpdateArgs) {
 
         let ball_radius = self.ball.radius + 10.0;
-        const BOUNCE_DAMPING: f64 = 1.0;
+        const BOUNCE_DAMPING: f64 = 0.9;
 
-        if self.ball.y + ball_radius > 500.0 {
+        if self.ball.y + ball_radius > self.win_size[1] {
             self.ball.vel.j = -self.ball.vel.j * BOUNCE_DAMPING;
-            self.ball.y = 500.0 - ball_radius;
+            self.ball.y = self.win_size[1] - ball_radius;
         } else if self.ball.y - ball_radius < 0.0 {
             self.ball.vel.j = -self.ball.vel.j * BOUNCE_DAMPING;
             self.ball.y = ball_radius;
@@ -44,9 +45,9 @@ impl App {
         self.ball.vel.j += self.gravity * args.dt;
         self.ball.y += distance(self.ball.vel.j, self.gravity, args.dt);
 
-        if self.ball.x + ball_radius > 500.0 {
+        if self.ball.x + ball_radius > self.win_size[0] {
             self.ball.vel.i = -self.ball.vel.i * BOUNCE_DAMPING;
-            self.ball.x = 500.0 - ball_radius;
+            self.ball.x = self.win_size[0] - ball_radius;
         } else if self.ball.x - ball_radius < 0.0 {
             self.ball.vel.i = -self.ball.vel.i * BOUNCE_DAMPING;
             self.ball.x = ball_radius;
@@ -55,7 +56,7 @@ impl App {
     }
 
     pub fn mouse_push(&mut self) {
-        const ATTRACT_FORCE_SCALE: f64 = 0.1;
+        const ATTRACT_FORCE_SCALE: f64 = 0.2;
         let force = Vector {
             i: ATTRACT_FORCE_SCALE * (self.last_mouse_pos.i - self.ball.x),
             j: ATTRACT_FORCE_SCALE * (self.last_mouse_pos.j - self.ball.y),

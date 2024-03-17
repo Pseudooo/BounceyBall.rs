@@ -5,7 +5,7 @@ extern crate piston;
 
 use glutin_window::GlutinWindow as Window;
 use opengl_graphics::{GlGraphics, OpenGL};
-use piston::{Button, ButtonState, Event, Input, MouseButton, MouseCursorEvent};
+use piston::{Button, ButtonState, Event, Input, MouseButton, MouseCursorEvent, Window as OtherWindow};
 use piston::event_loop::{Events, EventSettings};
 use piston::input::{RenderEvent, UpdateEvent};
 use piston::window::WindowSettings;
@@ -42,13 +42,15 @@ fn main() {
     let mut app = App {
         gl: GlGraphics::new(opengl),
         last_mouse_pos: Vector::new(0.0, 0.0),
-        gravity: 2750.0,
+        gravity: 3500.0,
         ball,
+        win_size: [500.0, 500.0]
     };
 
     let mut events = Events::new(EventSettings::new());
     let mut mouse_pushed = false;
     while let Some(e) = events.next(&mut window) {
+        app.win_size = [window.size().width, window.size().height];
 
         if let Some(mouse_args) = e.mouse_cursor_args() {
             app.last_mouse_pos = Vector::new(mouse_args[0], mouse_args[1]);
