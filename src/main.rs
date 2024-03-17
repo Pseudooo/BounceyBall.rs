@@ -3,11 +3,9 @@ extern crate graphics;
 extern crate opengl_graphics;
 extern crate piston;
 
-use std::fmt::Debug;
-
 use glutin_window::GlutinWindow as Window;
 use opengl_graphics::{GlGraphics, OpenGL};
-use piston::{Button, ButtonEvent, ButtonState, Event, Input, MouseButton, MouseCursorEvent};
+use piston::{Button, ButtonState, Event, Input, MouseButton, MouseCursorEvent};
 use piston::event_loop::{Events, EventSettings};
 use piston::input::{RenderEvent, UpdateEvent};
 use piston::window::WindowSettings;
