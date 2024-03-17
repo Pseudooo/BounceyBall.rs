@@ -53,6 +53,17 @@ impl App {
         }
         self.ball.x += self.ball.vel.i * args.dt;
     }
+
+    pub fn mouse_push(&mut self) {
+        const ATTRACT_FORCE_SCALE: f64 = 0.1;
+        let force = Vector {
+            i: ATTRACT_FORCE_SCALE * (self.last_mouse_pos.i - self.ball.x),
+            j: ATTRACT_FORCE_SCALE * (self.last_mouse_pos.j - self.ball.y),
+        };
+
+        self.ball.vel.i += force.i;
+        self.ball.vel.j += force.j;
+    }
 }
 
 
