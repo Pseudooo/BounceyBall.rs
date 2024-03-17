@@ -30,7 +30,7 @@ fn main() {
     let ball = crate::ball::Ball {
         x: 250.0,
         y: 250.0,
-        vel: Vector::new(0.0, -25.0),
+        vel: Vector::new(500.0, -25.0),
         radius: 10.0,
         colour: RED
     };
