@@ -28,13 +28,32 @@ impl App {
     }
 
     pub fn update(&mut self, args: &UpdateArgs) {
-        // +10 because of the thickness of the circle arc
-        if self.ball.y + self.ball.radius + 10.0 < 500.0 {
-            self.ball.vel.j += self.gravity * args.dt;
-        } else {
-            self.ball.vel.j = -self.ball.vel.j * 0.95;
-            self.ball.y = 480.0;
+
+        let ball_radius = self.ball.radius + 10.0;
+        const BOUNCE_DAMPING: f64 = 1.0;
+
+        if self.ball.y + ball_radius > 500.0 {
+            self.ball.vel.j = -self.ball.vel.j * BOUNCE_DAMPING;
+            self.ball.y = 500.0 - ball_radius;
+        } else if self.ball.y - ball_radius < 0.0 {
+            self.ball.vel.j = -self.ball.vel.j * BOUNCE_DAMPING;
+            self.ball.y = ball_radius;
         }
-        self.ball.y += (self.ball.vel.j * args.dt) - (0.5 * self.gravity * args.dt * args.dt);
+        self.ball.vel.j += self.gravity * args.dt;
+        self.ball.y += distance(self.ball.vel.j, self.gravity, args.dt);
+
+        if self.ball.x + ball_radius > 500.0 {
+            self.ball.vel.i = -self.ball.vel.i * BOUNCE_DAMPING;
+            self.ball.x = 500.0 - ball_radius;
+        } else if self.ball.x - ball_radius < 0.0 {
+            self.ball.vel.i = -self.ball.vel.i * BOUNCE_DAMPING;
+            self.ball.x = ball_radius;
+        }
+        self.ball.x += self.ball.vel.i * args.dt;
     }
+}
+
+
+fn distance(v: f64, a: f64, t: f64) -> f64 {
+    (v * t) - (0.5 * a * t * t)
 }
