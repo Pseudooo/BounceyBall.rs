@@ -31,28 +31,33 @@ impl App {
     }
 
     pub fn update(&mut self, args: &UpdateArgs) {
-
         let ball_radius = self.ball.radius + 10.0;
+        let dx = self.ball.vel.i * args.dt;
+        let dy = distance(self.ball.vel.j, self.gravity, args.dt);
+        let [win_width, win_height] = self.win_size;
+
         const BOUNCE_DAMPING: f64 = 0.9;
 
-        if self.ball.y + ball_radius > self.win_size[1] {
-            self.ball.vel.j = -self.ball.vel.j * BOUNCE_DAMPING;
-            self.ball.y = self.win_size[1] - ball_radius;
-        } else if self.ball.y - ball_radius < 0.0 {
-            self.ball.vel.j = -self.ball.vel.j * BOUNCE_DAMPING;
-            self.ball.y = ball_radius;
-        }
-        self.ball.vel.j += self.gravity * args.dt;
-        self.ball.y += distance(self.ball.vel.j, self.gravity, args.dt);
-
-        if self.ball.x + ball_radius > self.win_size[0] {
+        if self.ball.x + ball_radius + dx > win_width {
             self.ball.vel.i = -self.ball.vel.i * BOUNCE_DAMPING;
-            self.ball.x = self.win_size[0] - ball_radius;
+            self.ball.x = win_width - ball_radius;
         } else if self.ball.x - ball_radius < 0.0 {
             self.ball.vel.i = -self.ball.vel.i * BOUNCE_DAMPING;
             self.ball.x = ball_radius;
+        } else {
+            self.ball.x += dx;
         }
-        self.ball.x += self.ball.vel.i * args.dt;
+
+        if self.ball.y + ball_radius + dy > win_height {
+            self.ball.vel.j = -self.ball.vel.j * BOUNCE_DAMPING;
+            self.ball.y = win_height - ball_radius;
+        } else if self.ball.y - ball_radius < 0.0 {
+            self.ball.vel.j = -self.ball.vel.j * BOUNCE_DAMPING;
+            self.ball.y = ball_radius;
+        } else {
+            self.ball.y += dy;
+        }
+        self.ball.vel.j += self.gravity * args.dt;
     }
 
     pub fn mouse_push(&mut self) {
