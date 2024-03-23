@@ -60,8 +60,3 @@ impl App {
 
     }
 }
-
-
-fn distance(v: f64, a: f64, t: f64) -> f64 {
-    (v * t) - (0.5 * a * t * t)
-}
