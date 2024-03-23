@@ -1,4 +1,5 @@
 
+#[derive(Clone)]
 pub struct Vector {
     pub i: f64,
     pub j: f64,
