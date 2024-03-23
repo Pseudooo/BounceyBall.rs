@@ -11,8 +11,6 @@ use piston::input::{RenderEvent, UpdateEvent};
 use piston::window::WindowSettings;
 
 use crate::app::App;
-use crate::ball::Ball;
-use crate::vector::Vector;
 
 mod app;
 mod vector;
@@ -29,21 +27,13 @@ fn main() {
         .build()
         .unwrap();
 
-    let ball = Ball {
-        x: 250.0,
-        y: 250.0,
-        vel: Vector::new(500.0, -25.0),
-        radius: 10.0,
-        colour: RED
-    };
-
     const RED: [f32; 4] = [1.0, 0.0, 0.0, 1.0];
     // Create a new game and run it.
     let mut app = App {
         gl: GlGraphics::new(opengl),
         last_mouse_pos: [0.0, 0.0],
         gravity: 3500.0,
-        ball,
+        balls: Vec::new(),
         win_size: [500.0, 500.0]
     };
 
