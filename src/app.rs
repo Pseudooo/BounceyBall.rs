@@ -41,7 +41,6 @@ impl App {
     pub fn update(&mut self, args: &UpdateArgs) {
         self.fps = (1.0 / args.dt).trunc() as i32;
 
-        const BOUNCE_DAMPING: f64 = 0.9;
         for ball in &mut self.balls {
             let force = Vector::new(0.0, self.gravity);
             ball.tick(force, args.dt, self.win_size);
