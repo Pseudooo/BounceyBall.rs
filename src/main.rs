@@ -41,6 +41,7 @@ fn main() {
     // Create a new game and run it.
     let mut app = App {
         gl: GlGraphics::new(opengl),
+        fps: 0,
         last_mouse_pos: Vector::new(0.0, 0.0),
         gravity: 3500.0,
         ball,
