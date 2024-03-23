@@ -9,7 +9,7 @@ pub struct Ball {
 }
 
 impl Ball {
-    pub fn tick(&mut self, force: Vector, dt: f64, win_size: [f64; 2]) {
+    pub fn tick(&self, force: Vector, dt: f64, win_size: [f64; 2]) -> [Vector; 2] {
         const BOUNCE_DAMPING: f64 = 0.9;
 
         let radius_with_edge = self.radius + 10.0;
@@ -17,26 +17,32 @@ impl Ball {
         let dy = Self::distance(self.vel.j, force.j, dt);
         let [win_width, win_height] = win_size;
 
-        if self.x + radius_with_edge + dx > win_width {
-            self.vel.i = -self.vel.i * BOUNCE_DAMPING;
-            self.x = win_width - radius_with_edge;
-        } else if self.x - radius_with_edge < 0.0 {
-            self.vel.i = -self.vel.i * BOUNCE_DAMPING;
-            self.x = radius_with_edge;
-        } else {
-            self.x += dx;
-        }
+        let mut final_pos = Vector::new(self.x, self.y);
+        let mut final_vel = self.vel.clone();
 
-        if self.y + radius_with_edge + dy > win_height {
-            self.vel.j = -self.vel.j * BOUNCE_DAMPING;
-            self.y = win_height - radius_with_edge;
-        } else if self.y - radius_with_edge < 0.0 {
-            self.vel.j = -self.vel.j * BOUNCE_DAMPING;
-            self.y = radius_with_edge;
+        if self.x + radius_with_edge + dx > win_width {
+            final_vel.i = -final_vel.i * BOUNCE_DAMPING;
+            final_pos.i = win_width - radius_with_edge;
+        } else if self.x - radius_with_edge < 0.0 {
+            final_vel.i = -final_vel.i * BOUNCE_DAMPING;
+            final_pos.i = radius_with_edge;
         } else {
-            self.y += dy;
+            final_pos.i += dx;
         }
-        self.vel.j += force.j * dt;
+        final_vel.i += force.i * dt;
+
+        if final_pos.j + radius_with_edge + dy > win_height {
+            final_vel.j = -final_vel.j * BOUNCE_DAMPING;
+            final_pos.j = win_height - radius_with_edge;
+        } else if final_pos.j - radius_with_edge < 0.0 {
+            final_vel.j = -final_vel.j * BOUNCE_DAMPING;
+            final_pos.j = radius_with_edge;
+        } else {
+            final_pos.j += dy;
+        }
+        final_vel.j += force.j * dt;
+
+        return [final_pos, final_vel];
     }
 
     fn distance(v: f64, a: f64, t: f64) -> f64 {
