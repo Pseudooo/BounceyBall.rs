@@ -1,5 +1,6 @@
+use graphics::color::PURPLE;
 use graphics::ellipse::circle;
-use opengl_graphics::GlGraphics;
+use opengl_graphics::{GlGraphics, GlyphCache, TextureSettings};
 use piston::{RenderArgs, UpdateArgs};
 
 use crate::ball::Ball;
@@ -7,6 +8,7 @@ use crate::vector::Vector;
 
 pub struct App {
         pub gl: GlGraphics,
+        pub fps: i32,
         pub last_mouse_pos: Vector,
         pub gravity: f64,
         pub ball: Ball,
@@ -20,8 +22,11 @@ impl App {
         const WHITE: [f32; 4] = [1.0, 1.0, 1.0, 1.0];
 
         let ball = &self.ball;
+        let mut glyph_cache = GlyphCache::new("assets/FiraSans-Regular.ttf", (), TextureSettings::new())
+            .unwrap();
 
         self.gl.draw(args.viewport(), |c, gl| {
+            text(PURPLE, 14, &self.fps.to_string(), &mut glyph_cache, c.transform.trans(10.0, 20.0), gl).unwrap();
             clear(WHITE, gl);
 
             let transform = c.transform;
@@ -31,6 +36,8 @@ impl App {
     }
 
     pub fn update(&mut self, args: &UpdateArgs) {
+        self.fps = (1.0 / args.dt).trunc() as i32;
+
         let ball_radius = self.ball.radius + 10.0;
         let dx = self.ball.vel.i * args.dt;
         let dy = distance(self.ball.vel.j, self.gravity, args.dt);
