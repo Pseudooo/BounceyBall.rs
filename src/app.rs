@@ -8,8 +8,8 @@ use crate::vector::Vector;
 
 pub struct App {
         pub gl: GlGraphics,
+        pub last_mouse_pos: [f64; 2],
         pub fps: i32,
-        pub last_mouse_pos: Vector,
         pub gravity: f64,
         pub ball: Ball,
         pub win_size: [f64; 2]

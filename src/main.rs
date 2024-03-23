@@ -41,20 +41,19 @@ fn main() {
     // Create a new game and run it.
     let mut app = App {
         gl: GlGraphics::new(opengl),
+        last_mouse_pos: [0.0, 0.0],
         fps: 0,
-        last_mouse_pos: Vector::new(0.0, 0.0),
         gravity: 3500.0,
         ball,
         win_size: [500.0, 500.0]
     };
 
     let mut events = Events::new(EventSettings::new());
-    let mut mouse_pushed = false;
     while let Some(e) = events.next(&mut window) {
         app.win_size = [window.size().width, window.size().height];
 
         if let Some(mouse_args) = e.mouse_cursor_args() {
-            app.last_mouse_pos = Vector::new(mouse_args[0], mouse_args[1]);
+            app.last_mouse_pos = mouse_args;
         }
 
         if let Some(args) = e.render_args() {
@@ -65,25 +64,16 @@ fn main() {
             app.update(&args);
         }
 
-        if mouse_pushed {
-            app.mouse_push();
-        }
-
         match e {
             Event::Input(ref input, ..) => match input {
                 Input::Button(button) => match button.state {
                     ButtonState::Press => match button.button {
                         Button::Mouse(MouseButton::Left) => {
-                            mouse_pushed = true;
+                            app.mouse_push();
                         }
                         _ => ()
                     },
-                    ButtonState::Release => match button.button {
-                        Button::Mouse(MouseButton::Left) => {
-                            mouse_pushed = false;
-                        },
-                        _ => (),
-                    },
+                    _ => ()
                 }
                 _ => ()
             }
