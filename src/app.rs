@@ -43,7 +43,10 @@ impl App {
 
         for ball in &mut self.balls {
             let force = Vector::new(0.0, self.gravity);
-            ball.tick(force, args.dt, self.win_size);
+            let [pos, vel] = ball.tick(force, args.dt, self.win_size);
+            ball.x = pos.i;
+            ball.y = pos.j;
+            ball.vel = vel;
         }
     }
 
