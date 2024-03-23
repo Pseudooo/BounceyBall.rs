@@ -27,7 +27,6 @@ fn main() {
         .build()
         .unwrap();
 
-    const RED: [f32; 4] = [1.0, 0.0, 0.0, 1.0];
     // Create a new game and run it.
     let mut app = App {
         gl: GlGraphics::new(opengl),
